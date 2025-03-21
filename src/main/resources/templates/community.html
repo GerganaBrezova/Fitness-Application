@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community</title>
+    <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
+
+    <div class="community-container">
+        <h2>Share Your Thoughts About the App!</h2>
+        
+        <ul class="comments-section">
+
+            <li class="comment" th:each="systemPost : ${allSystemPosts}">
+                <span class="username" th:text="${systemPost.author.username}"></span>
+                <div class="section-p">
+                    <p th:text="${systemPost.content}"></p>
+
+                    <form th:action="@{'/community/delete-post/' + ${systemPost.id}}" th:method="DELETE">
+                        <button class="delete">Delete</button>
+                    </form>
+
+                </div>
+
+                <form th:action="@{'/community/post/' + ${systemPost.id} + '/like'}" th:method="PUT" th:object="${userLikedPosts}">
+                    <div class="comment-actions">
+                        <span th:classappend="${userLikedPosts.contains(systemPost) ? 'liked' : ''}" class="like-btn">
+                             <button type="submit" th:classappend="${userLikedPosts.contains(systemPost) ? 'liked' : ''}" class="like-btn">
+                                <i th:classappend="${userLikedPosts.contains(systemPost) ? 'liked' : ''}" class="fa-solid fa-heart"></i>
+                            </button>
+                            <span class="likes-count" th:text="${systemPost.likes}"></span>
+                        </span>
+                        <span class="timestamp" th:text="${#temporals.format(systemPost.postedOn, 'dd/MMM/yyyy HH:mm')}"></span>
+                    </div>
+                </form>
+
+            </li>
+
+        </ul>
+
+        <form th:action="@{/community/add-post}" th:method="POST">
+            <div class="comment-box">
+                <input type="text" name="postContent" placeholder="Comment..." required/>
+                <button class="post-btn">Post</button>
+            </div>
+        </form>
+
+    </div>
+    
+</body>
+</html>

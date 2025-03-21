@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Workouts</title>
+    <link rel="stylesheet" href="/css/workouts-history.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<body>
+
+<th:block th:insert="fragments/sidebar :: sidebar"></th:block>
+
+<div class="workouts-history-container">
+    <div class="workouts-header">Completed Workouts</div>
+
+    <ul class="workout-list">
+        <li th:each="completedWorkout : ${completedWorkouts}">
+
+                <span>
+                    <span th:text="${completedWorkout.type + ' | Day ' + completedWorkout.day + ' | Completed on:'}"></span>
+                    <span class="date" th:text="${#temporals.format(completedWorkout.completedOn, 'dd/MMM/yyyy')}"></span>
+                </span>
+
+            <form th:action="${'/workouts/completed/' + completedWorkout.id}" th:method="DELETE">
+                <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+            </form>
+
+        </li>
+    </ul>
+
+</div>
+
+
+</body>
+</html>

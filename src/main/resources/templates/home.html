@@ -1,0 +1,50 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
+    
+    <div class="dashboard-container">
+
+        <div class="welcome-profile-card">
+            <div class="welcome-card">
+                <h2 th:text="${#strings.isEmpty(user.name) ? 'Hello, ' + user.username + '!' : 'Hello, ' + user.name + '!'}"></h2>
+                <p>Eat well, stay hydrated, and keep moving to stay strong and healthy :)</p>
+            </div>
+
+            <div class="profile-card">
+                <div class="photo-container">
+                    <div class="profile-photo">
+                        <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? 'https://i0.wp.com/static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg?ssl=1' : user.profilePictureUrl}" alt="Profile Picture" class="profile-img">
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <p><strong>Username:</strong> <br th:text="${user.username}"></p>
+                    <p><strong>Name:</strong>  <br th:text="${#strings.isEmpty(user.name) ? 'Edit your profile and add name' : user.name}"></p>
+                    <p><strong>Email:</strong>  <br th:text="${user.email}"></p>
+                    <a th:href="@{'/users/' + ${user.id} + '/profile-edit'}" class="edit-profile">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card"><i class="fa-solid fa-star"></i><p>Points</p><h3 th:text="${user.points}"></h3></div>
+            <div class="stat-card"><i class="fa-solid fa-dumbbell"></i><p>Completed Workouts</p><h3 th:text="${user.completedWorkouts.size()}"></h3></div>
+            <div class="stat-card"><i class="fa-solid fa-apple-whole"></i><p>Calories Intake</p>
+                <a th:href="@{/calculator}" class="daily-intake-link">
+                    <h3 th:text="${user.dailyIntake == 0.0 ? 'Calculate your daily intake' : #numbers.formatDecimal(user.dailyIntake, 1, 0)}"></h3>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

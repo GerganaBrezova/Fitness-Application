@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<div th:fragment="sidebar" class="sidebar">
+    <div class="logo"></div>
+    <ul class="menu">
+
+        <li class="active">
+            <a th:href="@{/home}">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/plans}">
+                <i class="fa-solid fa-dumbbell"></i>
+                <span>Plans</span>
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/workouts/completed}">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/calculator}">
+                <i class="fa-solid fa-fire"></i>
+                <span>Calculator</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa-solid fa-apple-whole"></i>
+                <span>Meals</span>
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/community}">
+                <i class="fa-solid fa-comments"></i>
+                <span>Community</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa-solid fa-envelope"></i>
+                <span>Inbox</span>
+            </a>
+        </li>
+
+        <!--   USERS ONLY FOR ADMINS     -->
+
+        <li>
+            <a href="#">
+                <i class="fa-solid fa-people-group"></i>
+                <span>Users</span>
+            </a>
+        </li>
+
+        <li class="logout">
+            <a href="#">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
