@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meals</title>
+  <link rel="stylesheet" href="/css/meals.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<th:block th:insert="fragments/sidebar :: sidebar"></th:block>
+
+<div class="content">
+  <div class="form-container">
+    <h2>Your First Meal Today</h2>
+    <div class="form-group">
+      <input type="text" placeholder="Enter type (e.g. Breakfast)">
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder="Photo URL">
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder="Description">
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder="Calories">
+    </div>
+    <form action="" method="">
+      <button class="add-btn">Add</button>
+    </form>
+  </div>
+
+  <ul class="meal-list">
+    <li class="meal-card">
+      <h3>Breakfast</h3>
+      <div class="meal-content">
+        <div class="meal-info">
+          <p><i class="fa-solid fa-utensils"></i>Beef with Vegetables</p>
+          <p><i class="fa-solid fa-fire"></i>567 kcal</p>
+        </div>
+        <img src="https://media.istockphoto.com/id/1173167531/vector/plate-fork-and-knife-line-icons-stock-vector.jpg?s=612x612&w=0&k=20&c=VtgZYE_z9fUVtppmwwTAw2ht0CgPO8NRKKNZ1d0JOOw=" alt="Breakfast image">
+      </div>
+    </li>
+    <li class="meal-card">
+      <h3>Lunch</h3>
+      <div class="meal-content">
+        <div class="meal-info">
+          <p><i class="fa-solid fa-utensils"></i>Beef with Vegetables</p>
+          <p><i class="fa-solid fa-fire"></i>567 kcal</p>
+        </div>
+        <img src="https://media.istockphoto.com/id/1173167531/vector/plate-fork-and-knife-line-icons-stock-vector.jpg?s=612x612&w=0&k=20&c=VtgZYE_z9fUVtppmwwTAw2ht0CgPO8NRKKNZ1d0JOOw=" alt="Lunch image">
+      </div>
+    </li>
+    <li class="meal-card">
+      <h3>Dinner</h3>
+      <div class="meal-content">
+        <div class="meal-info">
+          <p><i class="fa-solid fa-utensils"></i>Beef with Vegetables</p>
+          <p><i class="fa-solid fa-fire"></i>567 kcal</p>
+        </div>
+        <img src="https://media.istockphoto.com/id/1173167531/vector/plate-fork-and-knife-line-icons-stock-vector.jpg?s=612x612&w=0&k=20&c=VtgZYE_z9fUVtppmwwTAw2ht0CgPO8NRKKNZ1d0JOOw=" alt="Dinner image">
+      </div>
+    </li>
+  </ul>
+</div>
+
+</body>
+</html>

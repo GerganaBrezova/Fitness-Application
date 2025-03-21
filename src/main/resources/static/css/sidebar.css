@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    font-family: 'Quicksand', serif;
+}
+
+body {
+    display: flex;
+    background: radial-gradient(
+        circle, #555555, #000000
+    );
+}
+
+.sidebar {
+    position: sticky;
+    top: 20px;
+    left: 20px;
+    bottom: 0;
+    width: 100px;
+    height: calc(100vh - 40px);
+    padding: 20px;
+    color: black;
+    overflow: hidden;
+    transition: all 0.5s linear;
+    border-radius: 50px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background: radial-gradient(
+        circle, #ffffff, #c8c5c5
+    );
+}
+
+.sidebar:hover {
+    width: 240px;
+    transition: 0.5s;
+}
+
+.logo {
+    height: 80px;
+    padding: 16px;
+}
+
+.menu {
+    height: 88%;
+    position: relative;
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    width: 100%;
+    padding: 1rem;
+    margin: 8px 0;
+    border-radius: 12px;
+    transition: all 0.5s ease-in-out;
+}
+
+.menu li:hover {
+    background: rgb(201, 201, 201);
+}
+
+.menu a {
+    color: black;
+    font-size: 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.menu a span {
+    overflow: hidden;
+}
+
+.menu a i {
+    font-size: 1.2rem;
+    min-width: 25px;
+    text-align: center;
+}
+
+.logout {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* here finishes side bar styles*/

@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans</title>
+    <link rel="stylesheet" href="/css/plans.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
+
+    <div class="plans-container">
+        <div class="plan-card beginner">
+            <h2 class="beginner-header">Beginner Plan <br> <span class="beginner-span">"Foundations"</span></h2>
+            <p class="label-beginner"><strong>Target Audience:</strong></p>
+            <p>New to fitness or returning after a break.</p>
+            <p class="label-beginner"><strong>Workout Focus:</strong></p>
+            <p>Building strength, learning proper form, and improving basic fitness levels.</p>
+            <p class="price-beginner">FREE</p>
+            <a href="#" class="start-btn">Start</a>
+        </div>
+
+        <div class="plan-card intermediate">
+            <h2 class="intermediate-header">Intermediate Plan <br> <span class="intermediate-span">"Progression"</span></h2>
+            <p class="label-intermediate"><strong>Target Audience:</strong></p>
+            <p>Individuals with a basic fitness level seeking a greater challenge.</p>
+            <p class="label-intermediate"><strong>Workout Focus:</strong></p>
+            <p>Developing strength, stamina, and improving skills through gradual advancement.</p>
+            <p class="price-intermediate">Unlock for 150 Points</p>
+            <a href="#" class="unlock-btn">Unlock</a>
+        </div>
+
+        <div class="plan-card advanced">
+            <h2 class="advanced-header">Advanced Plan <br> <span class="advanced-span">"Elite Performance"</span></h2>
+            <p class="label-advanced"><strong>Target Audience:</strong></p>
+            <p>Experienced individuals aiming for high-intensity performance.</p>
+            <p class="label-advanced"><strong>Workout Focus:</strong></p>
+            <p>Advanced strength training, explosive movements, and intense conditioning.</p>
+            <p class="price-advanced">Unlock for 200 Points</p>
+            <a href="#" class="unlock-btn">Unlock</a>
+        </div>
+    </div>
+
+</body>
+</html>
