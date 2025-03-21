@@ -4,11 +4,13 @@ import app.fittapp.workout_plan.model.WorkoutPlan;
 import app.fittapp.workout_plan.service.WorkoutPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Order(2)
 public class WorkoutInit implements CommandLineRunner {
 
     private final WorkoutService workoutService;

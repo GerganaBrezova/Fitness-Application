@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans</title>
+    <link rel="stylesheet" href="/css/plans.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
+
+    <div class="plans-container">
+        <div class="plan-card" th:each="workoutPlan : ${allSystemWorkoutPlans}">
+
+            <h2 th:classappend="${workoutPlan.type == 'Beginner Plan' ? 'beginner-header'
+                                : (workoutPlan.type == 'Intermediate Plan' ? 'intermediate-header'
+                                : 'advanced-header')}"
+                th:text="${workoutPlan.type}">
+            </h2>
+
+            <span th:classappend="${workoutPlan.type == 'Beginner Plan' ? 'beginner-span'
+                              : (workoutPlan.type == 'Intermediate Plan' ? 'intermediate-span'
+                              : 'advanced-span')}"
+                  th:text="${workoutPlan.name}">
+            </span>
+
+            <p th:classappend="${workoutPlan.type == 'Beginner Plan' ? 'label-beginner'
+                               : (workoutPlan.type == 'Intermediate Plan' ? 'label-intermediate'
+                               : 'label-advanced')}">
+                <strong>Target Audience:</strong>
+            </p>
+
+            <p th:text="${workoutPlan.targetAudience}"></p>
+
+            <p th:classappend="${workoutPlan.type == 'Beginner Plan' ? 'label-beginner'
+                               : (workoutPlan.type == 'Intermediate Plan' ? 'label-intermediate'
+                               : 'label-advanced')}">
+                <strong>Workout Focus:</strong>
+            </p>
+
+            <p th:text="${workoutPlan.workoutFocus}"></p>
+
+            <p th:classappend="${workoutPlan.type == 'Beginner Plan' ? 'price-beginner'
+                               : (workoutPlan.type == 'Intermediate Plan' ? 'price-intermediate'
+                               : 'price-advanced')}"
+               th:text="${workoutPlan.pointsNeeded == 0 ? 'FREE' : 'Unlock for ' + workoutPlan.pointsNeeded + ' points'}">
+            </p>
+
+            <a th:href="@{'/plans/' + ${workoutPlan.id} + '/workouts'}" class="start-btn" th:if="${#sets.contains(user.workoutPlans, workoutPlan)}">
+                Start
+            </a>
+
+            <form th:action="@{'/plans/' + ${workoutPlan.id} + '/unlock'}" th:method="POST" th:object="${workoutPlan}">
+                <button type="submit" class="unlock-btn" th:if="${!#sets.contains(user.workoutPlans, workoutPlan)}">
+                    Unlock
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+</body>
+</html>

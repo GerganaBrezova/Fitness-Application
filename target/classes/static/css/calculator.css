@@ -1,0 +1,134 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.calculator-container {
+    background: radial-gradient(
+        circle, #ffffff, #c8c5c5
+    );
+    border-radius: 60px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 700px;
+    margin: 70px auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 550px; 
+    overflow-y: auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px; 
+    width: 100%;
+    margin-top: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+select {
+    padding: 10px 30px 10px 10px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 500;
+    appearance: none;
+    background-size: 15px;
+    background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>') no-repeat 95% center;
+}
+
+input, select {
+    padding: 10px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-bottom: 7px;
+    color: #fd288d;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 20%;
+    align-self: center;
+    margin-top: 30px; 
+}
+
+.calculator-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 30px;
+    color: #fd288d;
+}
+
+button {
+    grid-column: span 2;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+    background: radial-gradient(
+        circle, #fd288d, #d250d6
+    );
+    color: white;
+}
+
+button:hover {
+    background: radial-gradient(
+        circle, #fd288d, #a825ab
+    );
+}
+
+.result {
+    font-weight: 400;
+    text-align: center;
+    width: 100%;
+    margin-top: 50px; 
+}
+
+.result b {
+    font-weight: 600;
+}
+
+.result a {
+    color: #ff55a5;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.result a:hover {
+    color: #d12375;
+}

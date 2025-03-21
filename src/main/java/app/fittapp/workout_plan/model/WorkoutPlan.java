@@ -37,7 +37,8 @@ public class WorkoutPlan {
     @Column(nullable = false)
     private int pointsNeeded;
 
-    @OneToMany (mappedBy = "workoutPlan", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "workoutPlan", fetch = FetchType.EAGER)
+    @Column(nullable = false)
     List<Workout> workouts = new ArrayList<>();
 
     @ManyToMany(mappedBy = "workoutPlans", fetch = FetchType.EAGER)

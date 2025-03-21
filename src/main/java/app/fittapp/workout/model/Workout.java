@@ -32,6 +32,6 @@ public class Workout {
     @ElementCollection
     private List<String> exercises;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private WorkoutPlan workoutPlan;
 }

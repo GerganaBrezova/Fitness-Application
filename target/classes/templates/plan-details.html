@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Plan</title>
+    <link rel="stylesheet" href="/css/plan-details.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
+    
+    <div class="workout-container">
+        <div class="header" th:classappend="${workoutPlan.type == 'Beginner Plan' ? 'beginner'
+                                : (workoutPlan.type == 'Intermediate Plan' ? 'intermediate'
+                                : 'advanced')}"
+             th:text="${workoutPlan.type + ' ' + workoutPlan.name}"></div>
+    
+        <div class="workout-content">
+
+            <div class="workout-card" th:each="workout : ${workoutPlan.workouts}">
+                <div class="workout-info">
+                    <h2 th:text="'Day ' + ${workout.day}"
+                        th:classappend="${workoutPlan.type == 'Beginner Plan' ? 'beginner'
+                        : (workoutPlan.type == 'Intermediate Plan' ? 'intermediate'
+                        : 'advanced')}">
+                    </h2>
+                    <p th:text="${workout.day % 3 == 0} ? '2 exercises' : '4 exercises'"></p>
+                    <p th:text="${workout.type}"></p>
+                </div>
+                <img th:src="@{${workout.imagePath}}" alt="Workout Image" class="workout-img">
+
+                <ul class="workout-list" >
+                    <li th:each="exercise : ${workout.exercises}" th:text="${exercise}"></li>
+                </ul>
+
+                <form th:action="@{'/workouts/' + ${workout.id} + '/completed'}" th:method="POST">
+                    <button class="complete-btn" type="submit">Add to completed</button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
