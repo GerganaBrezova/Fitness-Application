@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/meals")
@@ -39,6 +38,7 @@ public class MealController {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("meals");
+
         modelAndView.addObject("user", user);
         modelAndView.addObject("mealRequest", new MealRequest());
         modelAndView.addObject("caloriesFromMeals", caloriesFromMeals);
@@ -47,15 +47,29 @@ public class MealController {
     }
 
     @PostMapping("/add")
-    public String addMeal(@AuthenticationPrincipal UserAuthDetails userAuthDetails, @Valid MealRequest mealRequest, BindingResult bindingResult) {
+    public ModelAndView addMeal(@AuthenticationPrincipal UserAuthDetails userAuthDetails, @Valid MealRequest mealRequest, BindingResult bindingResult) {
+
+        User user = userService.getUserById(userAuthDetails.getId());
+        int caloriesFromMeals = userService.getCaloriesFromMeals(user);
 
         if (bindingResult.hasErrors()) {
-            return "meals";
+            ModelAndView modelAndView = new ModelAndView("meals");
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("mealRequest", mealRequest);
+            modelAndView.addObject("caloriesFromMeals", caloriesFromMeals);
+            return modelAndView;
         }
+
+        mealService.addNewMeal(mealRequest, user);
+        return new ModelAndView("redirect:/meals");
+    }
+
+    @DeleteMapping("/{mealId}/delete")
+    public String deleteMeal(@PathVariable UUID mealId, @AuthenticationPrincipal UserAuthDetails userAuthDetails) {
 
         User user = userService.getUserById(userAuthDetails.getId());
 
-        mealService.addNewMeal(mealRequest, user);
+        mealService.deleteMealById(mealId, user);
 
         return "redirect:/meals";
     }

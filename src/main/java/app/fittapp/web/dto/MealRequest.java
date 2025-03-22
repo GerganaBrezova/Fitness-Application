@@ -1,7 +1,6 @@
 package app.fittapp.web.dto;
 
 import app.fittapp.meal.model.MealType;
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
@@ -30,5 +29,5 @@ public class MealRequest {
 
     @Positive(message = "Calories cannot must be positive.")
     @NotNull(message = "Calories can not be empty.")
-    private int calories;
+    private Integer calories;
 }

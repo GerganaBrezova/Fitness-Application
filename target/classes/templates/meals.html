@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<!--TODO: fix form html-->
+
 <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
 
 <div class="content">
@@ -44,8 +46,8 @@
                 </div>
 
                 <div class="form-group">
-                    
-                    <input type="text" placeholder="Calories" th:field="*{calories}" />
+
+                    <input type="text" placeholder="Calories" th:field="*{calories}"/>
                     <small th:if="${#fields.hasErrors('calories')}" th:errors="*{calories}"></small>
 
                 </div>
@@ -65,12 +67,14 @@
                     <span th:if="${user.dailyIntake == 0}">
                         <a th:href="@{/calculator}" class="daily-intake-link">Calculate your calories</a>
                     </span>
-                    <span th:if="${user.dailyIntake > 0}" th:text="${#numbers.formatInteger(user.dailyIntake - caloriesFromMeals, 0)}">1150</span>
+                    <span th:if="${user.dailyIntake > 0}"
+                          th:text="${#numbers.formatInteger(user.dailyIntake - caloriesFromMeals, 0)}">1150</span>
                  </span>
             </p>
         </div>
 
     </div>
+
 
     <ul class="meal-list">
 
@@ -87,7 +91,7 @@
                 </div>
                 <img th:src="${#strings.isEmpty(meal.photoUrl) ? 'https://www.shutterstock.com/image-vector/cutlery-icon-spoon-forks-knife-600nw-1931212061.jpg' : meal.photoUrl}"
                      alt="Meal image">
-                <form>
+                <form th:action="@{'/meals/' + ${meal.id} + '/delete'}" th:method="DELETE">
                     <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
                 </form>
             </div>

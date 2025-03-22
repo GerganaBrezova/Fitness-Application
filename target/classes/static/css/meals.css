@@ -1,3 +1,5 @@
+/*TODO : fix form css*/
+
 .content {
     display: flex;
     gap: 50px;
@@ -46,7 +48,6 @@
     color: #b244b6;
 }
 
-
 .daily-intake-link  {
     color: #d250d6;
     text-decoration: none;
@@ -72,7 +73,7 @@
 }
 
 .form-group {
-    margin-bottom: 40px;
+    margin-bottom: 45px;
 }
 
 .form-group small {

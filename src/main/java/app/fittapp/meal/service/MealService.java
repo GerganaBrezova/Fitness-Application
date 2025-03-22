@@ -9,6 +9,9 @@ import app.fittapp.web.dto.MealRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class MealService {
 
@@ -35,5 +38,20 @@ public class MealService {
                 .build();
 
         mealRepository.save(meal);
+    }
+
+    public void deleteMealById(UUID mealId, User user) {
+
+        Meal meal = getMealById(mealId);
+
+        user.getMeals().remove(meal);
+
+        mealRepository.deleteById(mealId);
+
+        userService.saveUser(user);
+    }
+
+    private Meal getMealById(UUID mealId) {
+        return mealRepository.findById(mealId).orElseThrow(() -> new DomainException("Meal with id %s was not found.".formatted(mealId)));
     }
 }
