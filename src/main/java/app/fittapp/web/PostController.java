@@ -49,10 +49,7 @@ public class PostController {
 
         User user = userService.getUserById(userAuthDetails.getId());
 
-        postService.initPost(user, postContent);
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("community");
+        postService.addPost(user, postContent);
 
         return "redirect:/community";
     }

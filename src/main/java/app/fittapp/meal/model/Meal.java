@@ -30,6 +30,6 @@ public class Meal {
     @Column(nullable = false)
     private int calories;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
 }

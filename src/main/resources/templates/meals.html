@@ -1,68 +1,99 @@
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meals</title>
-  <link rel="stylesheet" href="/css/meals.css">
-  <link rel="stylesheet" href="/css/sidebar.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meals</title>
+    <link rel="stylesheet" href="/css/meals.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 
 <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
 
 <div class="content">
-  <div class="form-container">
-    <h2>Your First Meal Today</h2>
-    <div class="form-group">
-      <input type="text" placeholder="Enter type (e.g. Breakfast)">
-    </div>
-    <div class="form-group">
-      <input type="text" placeholder="Photo URL">
-    </div>
-    <div class="form-group">
-      <input type="text" placeholder="Description">
-    </div>
-    <div class="form-group">
-      <input type="text" placeholder="Calories">
-    </div>
-    <form action="" method="">
-      <button class="add-btn">Add</button>
-    </form>
-  </div>
 
-  <ul class="meal-list">
-    <li class="meal-card">
-      <h3>Breakfast</h3>
-      <div class="meal-content">
-        <div class="meal-info">
-          <p><i class="fa-solid fa-utensils"></i>Beef with Vegetables</p>
-          <p><i class="fa-solid fa-fire"></i>567 kcal</p>
+    <div class="info-container">
+        <div class="form-container">
+            <h2>Your First Meal Today</h2>
+
+            <form th:action="@{/meals/add}" th:method="POST" th:object="${mealRequest}">
+
+                <div class="form-group">
+
+                    <select th:field="*{type}">
+                        <option th:each="type : ${T(app.fittapp.meal.model.MealType).values()}"
+                                th:value="${type}"
+                                th:text="${#strings.capitalize(#strings.toLowerCase(type))}">
+                        </option>
+                    </select>
+
+                </div>
+                <div class="form-group">
+
+                    <input type="text" placeholder="Photo URL" th:field="*{photoUrl}">
+                    <small th:if="${#fields.hasErrors('photoUrl')}" th:errors="*{photoUrl}"></small>
+
+                </div>
+
+                <div class="form-group">
+
+                    <input type="text" placeholder="Description" th:field="*{description}">
+                    <small th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></small>
+
+                </div>
+
+                <div class="form-group">
+                    
+                    <input type="text" placeholder="Calories" th:field="*{calories}" />
+                    <small th:if="${#fields.hasErrors('calories')}" th:errors="*{calories}"></small>
+
+                </div>
+
+                <button class="add-btn">Add</button>
+
+            </form>
+
         </div>
-        <img src="https://media.istockphoto.com/id/1173167531/vector/plate-fork-and-knife-line-icons-stock-vector.jpg?s=612x612&w=0&k=20&c=VtgZYE_z9fUVtppmwwTAw2ht0CgPO8NRKKNZ1d0JOOw=" alt="Breakfast image">
-      </div>
-    </li>
-    <li class="meal-card">
-      <h3>Lunch</h3>
-      <div class="meal-content">
-        <div class="meal-info">
-          <p><i class="fa-solid fa-utensils"></i>Beef with Vegetables</p>
-          <p><i class="fa-solid fa-fire"></i>567 kcal</p>
+
+        <div class="calories-info">
+            <p>Your current calories:
+                <span class="calories" th:text="${caloriesFromMeals}"></span>
+            </p>
+            <p>Left:
+                <span class="calories">
+                    <span th:if="${user.dailyIntake == 0}">
+                        <a th:href="@{/calculator}" class="daily-intake-link">Calculate your calories</a>
+                    </span>
+                    <span th:if="${user.dailyIntake > 0}" th:text="${#numbers.formatInteger(user.dailyIntake - caloriesFromMeals, 0)}">1150</span>
+                 </span>
+            </p>
         </div>
-        <img src="https://media.istockphoto.com/id/1173167531/vector/plate-fork-and-knife-line-icons-stock-vector.jpg?s=612x612&w=0&k=20&c=VtgZYE_z9fUVtppmwwTAw2ht0CgPO8NRKKNZ1d0JOOw=" alt="Lunch image">
-      </div>
-    </li>
-    <li class="meal-card">
-      <h3>Dinner</h3>
-      <div class="meal-content">
-        <div class="meal-info">
-          <p><i class="fa-solid fa-utensils"></i>Beef with Vegetables</p>
-          <p><i class="fa-solid fa-fire"></i>567 kcal</p>
+
+    </div>
+
+    <ul class="meal-list">
+
+        <div class="no-meals" th:if="${#lists.isEmpty(user.meals)}">
+            <p>No meals</p>
         </div>
-        <img src="https://media.istockphoto.com/id/1173167531/vector/plate-fork-and-knife-line-icons-stock-vector.jpg?s=612x612&w=0&k=20&c=VtgZYE_z9fUVtppmwwTAw2ht0CgPO8NRKKNZ1d0JOOw=" alt="Dinner image">
-      </div>
-    </li>
-  </ul>
+
+        <li class="meal-card" th:each="meal : ${user.meals}">
+            <h3 th:text="${meal.mealType}"></h3>
+            <div class="meal-content">
+                <div class="meal-info">
+                    <p th:text="${meal.description}"><i class="fa-solid fa-utensils"></i></p>
+                    <p th:text="${meal.calories + ' kcal'}"><i class="fa-solid fa-fire"></i></p>
+                </div>
+                <img th:src="${#strings.isEmpty(meal.photoUrl) ? 'https://www.shutterstock.com/image-vector/cutlery-icon-spoon-forks-knife-600nw-1931212061.jpg' : meal.photoUrl}"
+                     alt="Meal image">
+                <form>
+                    <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+                </form>
+            </div>
+        </li>
+    </ul>
+
 </div>
 
 </body>

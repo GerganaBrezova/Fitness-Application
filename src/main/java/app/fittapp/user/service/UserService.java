@@ -2,17 +2,16 @@ package app.fittapp.user.service;
 
 import app.fittapp.calculator.service.CalculatorService;
 import app.fittapp.exceptions.DomainException;
+import app.fittapp.meal.model.Meal;
 import app.fittapp.post.model.Post;
 import app.fittapp.security.UserAuthDetails;
 import app.fittapp.user.model.User;
 import app.fittapp.user.model.UserRole;
 import app.fittapp.user.repository.UserRepository;
-import app.fittapp.web.dto.CalculateRequest;
-import app.fittapp.web.dto.EditRequest;
-import app.fittapp.web.dto.RegisterRequest;
-import app.fittapp.web.dto.UserRegisteredEvent;
+import app.fittapp.web.dto.*;
 import app.fittapp.workout.model.CompletedWorkout;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -142,5 +141,12 @@ public class UserService implements UserDetailsService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public int getCaloriesFromMeals(User user) {
+
+        return user.getMeals().stream()
+                .mapToInt(Meal::getCalories)
+                .sum();
     }
 }

@@ -31,7 +31,7 @@ public class PostService {
         this.userService = userService;
     }
 
-    public void initPost(User user, String postContent) {
+    public void addPost(User user, String postContent) {
         Post post = Post.builder()
                 .likes(0)
                 .author(user)
