@@ -17,9 +17,10 @@
 
     <div class="info-container">
         <div class="form-container">
-            <h2>Your First Meal Today</h2>
 
             <form th:action="@{/meals/add}" th:method="POST" th:object="${mealRequest}">
+
+                <h2>Your First Meal Today</h2>
 
                 <div class="form-group">
 

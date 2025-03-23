@@ -10,81 +10,75 @@
 <body>
 
     <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
-    
+
     <div class="main-content">
-        
+
         <div class="search-container">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search users..." class="search-input">
+            <form th:action="@{/users}" th:method="GET">
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" name="username" placeholder="Search users..." class="search-input" th:value="${param.username}">
+            </form>
         </div>
 
         <ul class="user-list">
 
-            <li class="user-item">
-                <div class="user-card">
-                    <div class="user-all-info">
-                        <div class="profile-photo">
-                            <img src="https://i0.wp.com/static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg?ssl=1" 
-                                 alt="Profile Picture" class="profile-img">
-                        </div>
-                        <div class="user-info">
-                            <h3>gergana_11</h3>
-                            <p><span class="p-span">Email:</span> gerganabrezoval1@gmail.com</p>
-                            <p><span class="p-span">Joined:</span> 10/03/2025</p>
-                            <div class="admin-toggle">
-
-                                <form action="" method="PUT"> 
-                                    <label class="switch">
-                                        <input type="checkbox" field=""/> 
-                                        <span class="slider"></span>
-                                    </label>
-                                </form>
-
-                                <p class="admin-label">Admin</p> 
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <form action="" method="">
-                    <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
-                </form>
+            <li th:if="${searchPerformed and searchedUser == null}" class="no-user">
+                <p th:text="${'User ' + param.username + ' was not found.'}"></p>
             </li>
 
-            <li class="user-item">
+            <li th:if="${searchPerformed and searchedUser != null}" class="user-item">
                 <div class="user-card">
                     <div class="user-all-info">
                         <div class="profile-photo">
-                            <img src="https://i0.wp.com/static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg?ssl=1" 
-                                 alt="Profile Picture" class="profile-img">
+                            <img th:src="${#strings.isEmpty(searchedUser.profilePictureUrl) ? 'https://i0.wp.com/static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg?ssl=1' : searchedUser.profilePictureUrl}" alt="Profile Picture" class="profile-img">
                         </div>
                         <div class="user-info">
-                            <h3>gergana_11</h3>
-                            <p><span class="p-span">Email:</span> gerganabrezoval1@gmail.com</p>
-                            <p><span class="p-span">Joined:</span> 10/03/2025</p>
-                            <div class="admin-toggle">
+                            <h3 th:text="${searchedUser.username}"></h3>
+                            <p><span class="p-span">Email:</span> <span th:text="${searchedUser.email}"></span></p>
+                            <p><span class="p-span">Joined:</span> <span th:text="${#temporals.format(searchedUser.createdOn, 'dd/MMM/yyyy')}"></span></p>
 
-                                <form action="" method="PUT"> 
-                                    <label class="switch">
-                                        <input type="checkbox" field=""/> 
-                                        <span class="slider"></span>
-                                    </label>
+                            <div class="change-buttons" th:if="${loggedUser.role.name() == 'ADMIN'}">
+                                <form th:action="@{'/users/' + ${searchedUser.id} + '/role-change'}" th:method="PUT">
+                                    <button type="submit" class="role-btn" th:text="${searchedUser.role.name() == 'ADMIN' ? 'Switch to User' : 'Switch to Admin'}"></button>
                                 </form>
-                                
-                                <p class="admin-label">Admin</p> 
-                                
+                                <form th:action="@{'/users/' + ${searchedUser.id} + '/status-change'}" th:method="PUT">
+                                    <button type="submit" class="status-btn" th:classappend="${searchedUser.active ? 'status-btn-active' : 'status-btn-inactive'}" th:text="${searchedUser.active ? 'Set as Inactive' : 'Set as Active'}"></button>
+                                </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
-                <form action="" method="">
-                    <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
-                </form>
+            </li>
+
+            <li class="user-item" th:each="user : ${users}" th:if="${not searchPerformed}">
+                <div class="user-card">
+                    <div class="user-all-info">
+                        <div class="profile-photo">
+                            <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? 'https://i0.wp.com/static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg?ssl=1' : user.profilePictureUrl}" alt="Profile Picture" class="profile-img">
+                        </div>
+                        <div class="user-info">
+                            <h3 th:text="${user.username}"></h3>
+                            <p><span class="p-span">Email:</span> <span th:text="${user.email}"></span></p>
+                            <p><span class="p-span">Joined:</span> <span th:text="${#temporals.format(user.createdOn, 'dd/MMM/yyyy')}"></span></p>
+
+                            <div class="change-buttons" th:if="${loggedUser.role.name() == 'ADMIN'}">
+                                <form th:action="@{'/users/' + ${user.id} + '/role-change'}" th:method="PUT">
+                                    <button type="submit" class="role-btn" th:text="${user.role.name() == 'ADMIN' ? 'Switch to User' : 'Switch to Admin'}"></button>
+                                </form>
+                                <form th:action="@{'/users/' + ${user.id} + '/status-change'}" th:method="PUT">
+                                    <button type="submit" class="status-btn" th:classappend="${user.active ? 'status-btn-active' : 'status-btn-inactive'}" th:text="${user.active ? 'Set as Inactive' : 'Set as Active'}"></button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </li>
 
         </ul>
 
-    </div> 
+    </div>
 
 </body>
 </html>

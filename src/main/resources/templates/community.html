@@ -21,7 +21,7 @@
                 <div class="section-p">
                     <p th:text="${systemPost.content}"></p>
 
-                    <form th:action="@{'/community/delete-post/' + ${systemPost.id}}" th:method="DELETE">
+                    <form th:action="@{'/community/delete-post/' + ${systemPost.id}}" th:method="DELETE" th:if="${user.role.name() == 'ADMIN'}">
                         <button class="delete">Delete</button>
                     </form>
 
