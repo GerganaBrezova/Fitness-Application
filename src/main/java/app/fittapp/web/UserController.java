@@ -1,17 +1,23 @@
 package app.fittapp.web;
 
+import app.fittapp.security.UserAuthDetails;
 import app.fittapp.user.model.User;
 import app.fittapp.user.service.UserService;
 import app.fittapp.web.dto.EditRequest;
 import app.fittapp.web.mapper.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users")
@@ -22,6 +28,47 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    public ModelAndView getUsersPage(@RequestParam(required = false) String username, @AuthenticationPrincipal UserAuthDetails userAuthDetails) {
+
+        ModelAndView modelAndView = new ModelAndView("users");
+
+        boolean searchPerformed = (username != null && !username.trim().isEmpty());
+
+        if (searchPerformed) {
+            User searchedUser = userService.getUserByUsername(username);
+            modelAndView.addObject("searchedUser", searchedUser);
+        } else {
+            List<User> users = userService.getAllUsers();
+            modelAndView.addObject("users", users);
+        }
+
+        User loggedUser = userService.getUserById(userAuthDetails.getId());
+
+        modelAndView.addObject("searchPerformed", searchPerformed);
+        modelAndView.addObject("loggedUser", loggedUser);
+
+        return modelAndView;
+    }
+
+    @PutMapping("/{userId}/role-change")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String changeUserRole(@PathVariable UUID userId) {
+
+        userService.changeRoles(userId);
+
+        return "redirect:/users";
+    }
+
+    @PutMapping("/{userId}/status-change")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String changeUserStatus(@PathVariable UUID userId) {
+
+        userService.changeStatus(userId);
+
+        return "redirect:/users";
     }
 
     @GetMapping("/{id}/profile-edit")

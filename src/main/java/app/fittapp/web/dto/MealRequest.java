@@ -27,7 +27,7 @@ public class MealRequest {
     @NotBlank(message = "Description can not be empty.")
     private String description;
 
-    @Positive(message = "Calories cannot must be positive.")
+    @Positive(message = "Calories must be positive.")
     @NotNull(message = "Calories can not be empty.")
     private Integer calories;
 }

@@ -149,4 +149,30 @@ public class UserService implements UserDetailsService {
                 .mapToInt(Meal::getCalories)
                 .sum();
     }
+
+    public void changeRoles(UUID userId) {
+
+        User user = getUserById(userId);
+
+        if (user.getRole() == UserRole.USER) {
+            user.setRole(UserRole.ADMIN);
+        } else {
+            user.setRole(UserRole.USER);
+        }
+
+        userRepository.save(user);
+    }
+
+    public void changeStatus(UUID userId) {
+
+        User user = getUserById(userId);
+
+        user.setActive(!user.isActive());
+
+        userRepository.save(user);
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
 }

@@ -7,6 +7,7 @@ import app.fittapp.user.model.User;
 import app.fittapp.user.service.UserService;
 import app.fittapp.workout.model.CompletedWorkout;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class PostController {
         modelAndView.setViewName("community");
         modelAndView.addObject("allSystemPosts", allSystemPosts);
         modelAndView.addObject("userLikedPosts", userLikedPosts);
+        modelAndView.addObject("user", user);
 
         return modelAndView;
     }
@@ -55,6 +57,7 @@ public class PostController {
     }
 
     @DeleteMapping("/delete-post/{postId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deletePost(@PathVariable UUID postId) {
 
         Post post = postService.getPostById(postId);
