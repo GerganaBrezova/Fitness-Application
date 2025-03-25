@@ -17,6 +17,7 @@
 
                         <input type="text" id="username" name="username" th:field="*{username}"/>
                         <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+                        <small th:text="${usernameAlreadyExistMessage}"></small>
                     </div>
 
                     <div class="form-group">
@@ -24,6 +25,7 @@
 
                         <input type="email" id="email" name="email" th:field="*{email}"/>
                         <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                        <small th:text="${emailAlreadyExistMessage}"></small>
                     </div>
                 
                     <div class="form-group">
@@ -31,6 +33,7 @@
 
                         <input type="password" class="form-control" id="password" name="password" th:field="*{password}"/>
                         <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+                        <small th:text="${passwordsDoNotMatchMessage}"></small>
                     </div>
                 
                     <div class="form-group">
@@ -38,6 +41,7 @@
 
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}"/>
                         <small th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></small>
+                        <small th:text="${passwordsDoNotMatchMessage}"></small>
                     </div>
                 
 

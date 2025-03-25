@@ -1,7 +1,7 @@
 package app.fittapp.user.service;
 
 import app.fittapp.calculator.service.CalculatorService;
-import app.fittapp.exceptions.DomainException;
+import app.fittapp.exceptions.*;
 import app.fittapp.meal.model.Meal;
 import app.fittapp.post.model.Post;
 import app.fittapp.security.UserAuthDetails;
@@ -9,9 +9,7 @@ import app.fittapp.user.model.User;
 import app.fittapp.user.model.UserRole;
 import app.fittapp.user.repository.UserRepository;
 import app.fittapp.web.dto.*;
-import app.fittapp.workout.model.CompletedWorkout;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,13 +19,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 
@@ -50,14 +46,19 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void register(RegisterRequest registerRequest) {
 
-        Optional<User> optionalUser = userRepository.findByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail());
+        Optional<User> optionalUserByUsername = userRepository.findByUsername(registerRequest.getUsername());
+        Optional<User> optionalUserByEmail = userRepository.findByEmail(registerRequest.getEmail());
 
-        if (optionalUser.isPresent()) {
-            throw new DomainException("Username %s or email %s already exists.".formatted(registerRequest.getUsername(), registerRequest.getEmail()));
+        if (optionalUserByUsername.isPresent()) {
+            throw new UsernameAlreadyExists("Username %s already exists.".formatted(registerRequest.getUsername()));
+        }
+
+        if (optionalUserByEmail.isPresent()) {
+            throw new EmailAlreadyExists("Email %s already exists.".formatted(registerRequest.getEmail()));
         }
 
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
-            throw new DomainException("Passwords do not match.");
+            throw new PasswordsDoNotMatch("Passwords do not match.");
         }
 
         User user = User.builder()
@@ -70,12 +71,12 @@ public class UserService implements UserDetailsService {
                 .createdOn(LocalDateTime.now())
                 .build();
 
+        userRepository.save(user);
 
         UserRegisteredEvent event = UserRegisteredEvent.builder()
                 .userId(user.getId())
                 .build();
 
-        userRepository.save(user);
 
         applicationEventPublisher.publishEvent(event);
 
@@ -172,7 +173,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

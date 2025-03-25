@@ -1,5 +1,6 @@
 package app.fittapp.web;
 
+import app.fittapp.exceptions.UserNotFound;
 import app.fittapp.security.UserAuthDetails;
 import app.fittapp.user.model.User;
 import app.fittapp.user.service.UserService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,18 +38,15 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("users");
 
         boolean searchPerformed = (username != null && !username.trim().isEmpty());
+        modelAndView.addObject("searchPerformed", searchPerformed);
 
-        if (searchPerformed) {
-            User searchedUser = userService.getUserByUsername(username);
-            modelAndView.addObject("searchedUser", searchedUser);
-        } else {
-            List<User> users = userService.getAllUsers();
-            modelAndView.addObject("users", users);
-        }
+        User searchedUser = userService.getUserByUsername(username).orElse(null);
+        modelAndView.addObject("searchedUser", searchedUser);
+
+        List<User> users = userService.getAllUsers();
+        modelAndView.addObject("users", users);
 
         User loggedUser = userService.getUserById(userAuthDetails.getId());
-
-        modelAndView.addObject("searchPerformed", searchPerformed);
         modelAndView.addObject("loggedUser", loggedUser);
 
         return modelAndView;
