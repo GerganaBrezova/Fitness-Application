@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Controller
@@ -35,7 +36,7 @@ public class PostController {
         List<Post> allSystemPosts = postService.getAllPosts();
 
         User user = userService.getUserById(userAuthDetails.getId());
-        List<Post> userLikedPosts = userService.getAllLikedPostsByUser(user);
+        Set<Post> userLikedPosts = user.getLikedPosts();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("community");

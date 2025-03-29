@@ -20,10 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 
@@ -44,7 +41,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void register(RegisterRequest registerRequest) {
+    public User register(RegisterRequest registerRequest) {
 
         Optional<User> optionalUserByUsername = userRepository.findByUsername(registerRequest.getUsername());
         Optional<User> optionalUserByEmail = userRepository.findByEmail(registerRequest.getEmail());
@@ -81,9 +78,10 @@ public class UserService implements UserDetailsService {
         applicationEventPublisher.publishEvent(event);
 
         log.info("Successfully created account for username %s with id %s.".formatted(user.getUsername(), user.getId()));
+
+        return user;
     }
 
-    @Transactional
     public void calculateUserDailyIntake(UUID userId, CalculateRequest calculateRequest) {
 
         User user = getUserById(userId);
@@ -121,23 +119,23 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UserNotFound {
 
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("User %s not found.".formatted(username)));
+        User user = getUserByUsername(username);
 
         return new UserAuthDetails(user.getId(), username, user.getPassword(), user.getEmail(), user.getRole(), user.isActive());
     }
 
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFound("User %s was not found.".formatted(username)));
+    }
+
     public User getUserById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new DomainException("User with id %s not found.".formatted(id)));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFound("User with id %s not found.".formatted(id)));
     }
 
     public void saveUser(User user) {
         userRepository.save(user);
-    }
-
-    public List<Post> getAllLikedPostsByUser(User user) {
-        return new ArrayList<>(user.getLikedPosts());
     }
 
     public List<User> getAllUsers() {
@@ -157,7 +155,7 @@ public class UserService implements UserDetailsService {
 
         if (user.getRole() == UserRole.USER) {
             user.setRole(UserRole.ADMIN);
-        } else {
+        } else if (user.getRole() == UserRole.ADMIN) {
             user.setRole(UserRole.USER);
         }
 
@@ -173,7 +171,4 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
 }

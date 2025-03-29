@@ -85,5 +85,4 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Meal> meals = new ArrayList<>();
-
 }

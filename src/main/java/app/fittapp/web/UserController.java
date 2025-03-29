@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users")
@@ -33,15 +31,38 @@ public class UserController {
     }
 
     @GetMapping
-    public ModelAndView getUsersPage(@RequestParam(required = false) String username, @AuthenticationPrincipal UserAuthDetails userAuthDetails) {
+    public ModelAndView getUsersPage(@AuthenticationPrincipal UserAuthDetails userAuthDetails) {
 
-        ModelAndView modelAndView = new ModelAndView("users");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("users");
+
+        List<User> users = userService.getAllUsers();
+        modelAndView.addObject("users", users);
+
+        User loggedUser = userService.getUserById(userAuthDetails.getId());
+        modelAndView.addObject("loggedUser", loggedUser);
+
+        modelAndView.addObject("searchPerformed", false);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/search")
+    public ModelAndView searchUsers(@RequestParam(required = false) String username, @AuthenticationPrincipal UserAuthDetails userAuthDetails) {
 
         boolean searchPerformed = (username != null && !username.trim().isEmpty());
+
+        ModelAndView modelAndView = new ModelAndView("users");
         modelAndView.addObject("searchPerformed", searchPerformed);
 
-        User searchedUser = userService.getUserByUsername(username).orElse(null);
-        modelAndView.addObject("searchedUser", searchedUser);
+        if (searchPerformed) {
+            try {
+                User searchedUser = userService.getUserByUsername(username);
+                modelAndView.addObject("searchedUser", searchedUser);
+            } catch (UserNotFound e) {
+                modelAndView.addObject("userNotFoundMessage", e.getMessage());
+            }
+        }
 
         List<User> users = userService.getAllUsers();
         modelAndView.addObject("users", users);

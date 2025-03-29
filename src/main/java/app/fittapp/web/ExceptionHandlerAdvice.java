@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Collections;
 
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
@@ -46,16 +47,16 @@ public class ExceptionHandlerAdvice {
         return "redirect:/register";
     }
 
-    /*
     @ExceptionHandler(UserNotFound.class)
-    public String handleUserNotFound(RedirectAttributes redirectAttributes, UserNotFound userNotFoundException) {
+    public ModelAndView handleUserNotFoundException(UserNotFound userNotFoundException) {
 
-        String message = userNotFoundException.getMessage();
-        redirectAttributes.addFlashAttribute("userNotFoundMessage", message);
+        ModelAndView modelAndView = new ModelAndView("users");
+        modelAndView.addObject("searchPerformed", true);
+        modelAndView.addObject("userNotFoundMessage", userNotFoundException.getMessage());
+        modelAndView.addObject("users", Collections.emptyList());
 
-        return "redirect:/users";
+        return modelAndView;
     }
-    */
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({

@@ -1,6 +1,7 @@
 package app.fittapp.workout.service;
 
 import app.fittapp.exceptions.DomainException;
+import app.fittapp.message.service.MessageService;
 import app.fittapp.user.model.User;
 import app.fittapp.user.repository.UserRepository;
 import app.fittapp.user.service.UserService;
@@ -60,6 +61,10 @@ public class WorkoutService {
         userService.saveUser(user);
 
         completedWorkoutRepository.save(completedWorkout);
+
+//        String header = "Well done, " + user.getUsername() + "!";
+//        String content = "You have just received 5 points for completing a workout!";
+//        messageService.saveMessage(user.getId(), header, content);
     }
 
     public Workout getWorkoutById(UUID workoutId) {

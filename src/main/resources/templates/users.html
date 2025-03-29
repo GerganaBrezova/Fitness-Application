@@ -14,7 +14,7 @@
 <div class="main-content">
 
     <div class="search-container">
-        <form th:action="@{/users}" th:method="GET">
+        <form th:action="@{/users/search}" th:method="GET">
             <button><i class="fa-solid fa-magnifying-glass"></i></button>
             <input type="text" name="username" placeholder="Search users..." class="search-input" th:value="${param.username}">
         </form>
@@ -22,11 +22,11 @@
 
     <ul class="user-list">
 
-        <li th:if="${searchPerformed and searchedUser == null}" class="no-user">
-            <p th:text="${'User ' + param.username + ' was not found.'}"></p>
+        <li th:if="${searchPerformed and userNotFoundMessage != null}" class="no-user">
+            <p th:text="${userNotFoundMessage}"></p>
         </li>
 
-        <li th:if="${searchPerformed and searchedUser != null}" class="user-item">
+        <li th:if="${searchPerformed and userNotFoundMessage == null and searchedUser != null}" class="user-item">
             <div class="user-card">
                 <div class="user-all-info">
                     <div class="profile-photo">
