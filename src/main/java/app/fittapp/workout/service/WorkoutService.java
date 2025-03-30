@@ -1,6 +1,7 @@
 package app.fittapp.workout.service;
 
 import app.fittapp.exceptions.DomainException;
+import app.fittapp.exceptions.WorkoutNotFound;
 import app.fittapp.message.service.MessageService;
 import app.fittapp.user.model.User;
 import app.fittapp.user.repository.UserRepository;
@@ -61,25 +62,17 @@ public class WorkoutService {
         userService.saveUser(user);
 
         completedWorkoutRepository.save(completedWorkout);
-
-//        String header = "Well done, " + user.getUsername() + "!";
-//        String content = "You have just received 5 points for completing a workout!";
-//        messageService.saveMessage(user.getId(), header, content);
     }
 
     public Workout getWorkoutById(UUID workoutId) {
-        return workoutRepository.findById(workoutId).orElseThrow(() -> new DomainException("Workout with id %s was not found.".formatted(workoutId)));
+        return workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFound("Workout with id %s was not found.".formatted(workoutId)));
     }
 
     public CompletedWorkout getCompletedWorkoutById(UUID completedWorkoutId) {
-        return completedWorkoutRepository.findById(completedWorkoutId).orElseThrow(() -> new DomainException("Completed workout with id %s was not found.".formatted(completedWorkoutId)));
+        return completedWorkoutRepository.findById(completedWorkoutId).orElseThrow(() -> new WorkoutNotFound("Completed workout with id %s was not found.".formatted(completedWorkoutId)));
     }
 
     public void deleteCompletedWorkout(CompletedWorkout completedWorkout) {
         completedWorkoutRepository.delete(completedWorkout);
-    }
-
-    public List<CompletedWorkout> getCompletedWorkoutsByUser(User user) {
-        return completedWorkoutRepository.findByUserOrderByCompletedOnDesc(user);
     }
 }

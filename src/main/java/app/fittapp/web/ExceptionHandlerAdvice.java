@@ -1,9 +1,6 @@
 package app.fittapp.web;
 
-import app.fittapp.exceptions.EmailAlreadyExists;
-import app.fittapp.exceptions.PasswordsDoNotMatch;
-import app.fittapp.exceptions.UserNotFound;
-import app.fittapp.exceptions.UsernameAlreadyExists;
+import app.fittapp.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -56,6 +53,24 @@ public class ExceptionHandlerAdvice {
         modelAndView.addObject("users", Collections.emptyList());
 
         return modelAndView;
+    }
+
+    @ExceptionHandler(ExcessiveNumberOfMeals.class)
+    public String handleExcessiveMealsCount(RedirectAttributes redirectAttributes, ExcessiveNumberOfMeals mealsException) {
+
+        String message = mealsException.getMessage();
+        redirectAttributes.addFlashAttribute("excessiveMealCountMessage", message);
+
+        return "redirect:/meals";
+    }
+
+    @ExceptionHandler(InsufficientAmountOfPoints.class)
+    public String handleInsufficientAmountOfPoints(RedirectAttributes redirectAttributes, InsufficientAmountOfPoints insufficientAmountOfPointsException) {
+
+        String message = insufficientAmountOfPointsException.getMessage();
+        redirectAttributes.addFlashAttribute("insufficientAmountOfPointsMessage", message);
+
+        return "redirect:/plans";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

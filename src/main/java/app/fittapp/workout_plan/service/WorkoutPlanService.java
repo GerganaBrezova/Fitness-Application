@@ -1,6 +1,8 @@
 package app.fittapp.workout_plan.service;
 
 import app.fittapp.exceptions.DomainException;
+import app.fittapp.exceptions.InsufficientAmountOfPoints;
+import app.fittapp.exceptions.WorkoutPlanNotFound;
 import app.fittapp.user.model.User;
 import app.fittapp.user.service.UserService;
 import app.fittapp.web.dto.UserRegisteredEvent;
@@ -72,14 +74,14 @@ public class WorkoutPlanService {
 
             userService.saveUser(user);
         } else {
-            throw new DomainException("Not enough points to unlock workout plan.");
+            throw new InsufficientAmountOfPoints("Not enough points: %d remains.".formatted(workoutPlan.getPointsNeeded() - user.getPoints()));
         }
 
         log.info("User %s unlocked %s successfully.".formatted(user.getUsername(), workoutPlan.getType()));
     }
 
     public WorkoutPlan getWorkoutPlanById(UUID workoutPlanId) {
-        return workoutPlanRepository.findById(workoutPlanId).orElseThrow(() -> new DomainException("Workout plan with id %s was not found.".formatted(workoutPlanId)));
+        return workoutPlanRepository.findById(workoutPlanId).orElseThrow(() -> new WorkoutPlanNotFound("Workout plan with id %s was not found.".formatted(workoutPlanId)));
     }
 
     @Async
@@ -96,9 +98,8 @@ public class WorkoutPlanService {
         log.info("Assigned 'Beginner Plan' to user with id %s.".formatted(user.getId()));
     }
 
-    public WorkoutPlan getWorkoutPlanByType(String title) {
-
-        return workoutPlanRepository.findByType(title);
+    public WorkoutPlan getWorkoutPlanByType(String type) {
+        return workoutPlanRepository.findByType(type).orElseThrow(() -> new WorkoutPlanNotFound("Workout plan %s was not found.".formatted(type)));
     }
 
     public void sortWorkoutsByDay(WorkoutPlan plan) {

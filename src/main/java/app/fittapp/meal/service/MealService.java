@@ -1,15 +1,13 @@
 package app.fittapp.meal.service;
 
-import app.fittapp.exceptions.DomainException;
+import app.fittapp.exceptions.ExcessiveNumberOfMeals;
+import app.fittapp.exceptions.MealNotFound;
 import app.fittapp.meal.model.Meal;
 import app.fittapp.meal.repository.MealRepository;
 import app.fittapp.user.model.User;
 import app.fittapp.user.service.UserService;
 import app.fittapp.web.dto.MealRequest;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,8 +23,8 @@ public class MealService {
 
     public void addNewMeal(MealRequest mealRequest, User user) {
 
-        if (user.getMeals().size() >= 3) {
-            throw new DomainException("Cannot add more than 3 meals.");
+        if (user.getMeals().size() == 3) {
+            throw new ExcessiveNumberOfMeals("Cannot add more than 3 meals.");
         }
 
         Meal meal = Meal.builder()
@@ -38,6 +36,9 @@ public class MealService {
                 .build();
 
         mealRepository.save(meal);
+
+        user.getMeals().add(meal);
+        userService.saveUser(user);
     }
 
     public void deleteMealById(UUID mealId, User user) {
@@ -51,7 +52,7 @@ public class MealService {
         userService.saveUser(user);
     }
 
-    private Meal getMealById(UUID mealId) {
-        return mealRepository.findById(mealId).orElseThrow(() -> new DomainException("Meal with id %s was not found.".formatted(mealId)));
+    public Meal getMealById(UUID mealId) {
+        return mealRepository.findById(mealId).orElseThrow(() -> new MealNotFound("Meal with id %s was not found.".formatted(mealId)));
     }
 }

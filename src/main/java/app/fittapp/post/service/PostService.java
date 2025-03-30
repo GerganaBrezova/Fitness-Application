@@ -1,6 +1,7 @@
 package app.fittapp.post.service;
 
 import app.fittapp.exceptions.DomainException;
+import app.fittapp.exceptions.PostNotFound;
 import app.fittapp.post.model.Post;
 import app.fittapp.post.repository.PostRepository;
 import app.fittapp.security.UserAuthDetails;
@@ -47,7 +48,7 @@ public class PostService {
     }
 
     public Post getPostById(UUID postId) {
-        return postRepository.findById(postId).orElseThrow(() -> new DomainException("Post with id %s was not found.".formatted(postId)));
+        return postRepository.findById(postId).orElseThrow(() -> new PostNotFound("Post with id %s was not found.".formatted(postId)));
     }
 
     public void deletePost(Post post) {
@@ -55,6 +56,9 @@ public class PostService {
         List<User> users = userService.getAllUsers();
 
         for (User user : users) {
+            if (user.getId().equals(post.getAuthor().getId())) {
+                user.getPosts().remove(post);
+            }
             user.getLikedPosts().remove(post);
             userService.saveUser(user);
         }
