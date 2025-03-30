@@ -33,7 +33,7 @@ public class WorkoutController {
 
         User user = userService.getUserById(userAuthDetails.getId());
 
-        List<CompletedWorkout> completedWorkouts = workoutService.getCompletedWorkoutsByUser(user);
+        List<CompletedWorkout> completedWorkouts = user.getCompletedWorkouts();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("workouts-history");
