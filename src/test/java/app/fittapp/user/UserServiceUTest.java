@@ -6,7 +6,6 @@ import app.fittapp.exceptions.PasswordsDoNotMatch;
 import app.fittapp.exceptions.UserNotFound;
 import app.fittapp.exceptions.UsernameAlreadyExists;
 import app.fittapp.meal.model.Meal;
-import app.fittapp.post.model.Post;
 import app.fittapp.security.UserAuthDetails;
 import app.fittapp.user.model.*;
 import app.fittapp.user.repository.UserRepository;
@@ -25,10 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -145,7 +142,7 @@ public class UserServiceUTest {
 
         User actualUser = userService.getUserById(userId);
 
-        assertNotNull(userService.getUserById(userId));
+        assertNotNull(actualUser);
         assertEquals(expectedUser.getId(), actualUser.getId());
     }
 
@@ -172,7 +169,7 @@ public class UserServiceUTest {
 
         User actualUser = userService.getUserByUsername(username);
 
-        assertNotNull(userService.getUserByUsername(username));
+        assertNotNull(actualUser);
         assertEquals(expectedUser.getUsername(), actualUser.getUsername());
     }
 
