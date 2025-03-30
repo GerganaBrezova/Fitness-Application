@@ -56,6 +56,14 @@
                 <button type="submit" class="unlock-btn" th:if="${!#sets.contains(user.workoutPlans, workoutPlan)}">
                     Unlock
                 </button>
+
+                <div th:if="${insufficientAmountOfPointsMessage}" class="modal-overlay">
+                    <div class="modal-content">
+                        <p th:text="${insufficientAmountOfPointsMessage}"></p>
+                        <a th:href="@{/plans}" class="close-btn">OK</a>
+                    </div>
+                </div>
+
             </form>
 
         </div>

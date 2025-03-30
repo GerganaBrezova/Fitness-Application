@@ -33,11 +33,11 @@
                         <img th:src="${#strings.isEmpty(searchedUser.profilePictureUrl) ? 'https://i0.wp.com/static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg?ssl=1' : searchedUser.profilePictureUrl}" alt="Profile Picture" class="profile-img">
                     </div>
                     <div class="user-info">
-                        <h3 th:text="${searchedUser.username}"></h3>
+                        <h3 th:text="${loggedUser.id != searchedUser.id ? searchedUser.username : searchedUser.username + ' (you)'}"></h3>
                         <p><span class="p-span">Email:</span> <span th:text="${searchedUser.email}"></span></p>
                         <p><span class="p-span">Joined:</span> <span th:text="${#temporals.format(searchedUser.createdOn, 'dd/MMM/yyyy')}"></span></p>
 
-                        <div class="change-buttons" th:if="${loggedUser.role.name() == 'ADMIN'}">
+                        <div class="change-buttons" th:if="${loggedUser.role.name() == 'ADMIN' and loggedUser.id != searchedUser.id}">
                             <form th:action="@{'/users/' + ${searchedUser.id} + '/role-change'}" th:method="PUT">
                                 <button type="submit" class="role-btn" th:text="${searchedUser.role.name() == 'ADMIN' ? 'Switch to User' : 'Switch to Admin'}"></button>
                             </form>
@@ -58,11 +58,11 @@
                         <img th:src="${#strings.isEmpty(user.profilePictureUrl) ? 'https://i0.wp.com/static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg?ssl=1' : user.profilePictureUrl}" alt="Profile Picture" class="profile-img">
                     </div>
                     <div class="user-info">
-                        <h3 th:text="${user.username}"></h3>
+                        <h3 th:text="${loggedUser.id != user.id ? user.username : user.username + ' (you)'}"></h3>
                         <p><span class="p-span">Email:</span> <span th:text="${user.email}"></span></p>
                         <p><span class="p-span">Joined:</span> <span th:text="${#temporals.format(user.createdOn, 'dd/MMM/yyyy')}"></span></p>
 
-                        <div class="change-buttons" th:if="${loggedUser.role.name() == 'ADMIN'}">
+                        <div class="change-buttons" th:if="${loggedUser.role.name() == 'ADMIN' and loggedUser.id != user.id}">
                             <form th:action="@{'/users/' + ${user.id} + '/role-change'}" th:method="PUT">
                                 <button type="submit" class="role-btn" th:text="${user.role.name() == 'ADMIN' ? 'Switch to User' : 'Switch to Admin'}"></button>
                             </form>

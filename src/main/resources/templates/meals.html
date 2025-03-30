@@ -54,6 +54,7 @@
                 </div>
 
                 <button class="add-btn">Add</button>
+                <small th:text="${excessiveMealCountMessage}"></small>
 
             </form>
 
@@ -68,9 +69,13 @@
                     <span th:if="${user.dailyIntake == 0}">
                         <a th:href="@{/calculator}" class="daily-intake-link">Calculate your calories</a>
                     </span>
-                    <span th:if="${user.dailyIntake > 0}"
-                          th:text="${#numbers.formatInteger(user.dailyIntake - caloriesFromMeals, 0)}">1150</span>
-                 </span>
+                    <span th:if="${user.dailyIntake - caloriesFromMeals >= 0}"
+                          th:text="${#numbers.formatInteger(user.dailyIntake - caloriesFromMeals, 0)}">
+                    </span>
+
+                    <span th:if="${user.dailyIntake - caloriesFromMeals < 0}"
+                          th:text="'You have exceeded by ' + ${#numbers.formatInteger(caloriesFromMeals - user.dailyIntake, 0)} + ' calories!'">
+                    </span>
             </p>
         </div>
 
@@ -96,6 +101,7 @@
                     <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
                 </form>
             </div>
+            <small th:text="${mealNotFoundMessage}"></small>
         </li>
     </ul>
 
