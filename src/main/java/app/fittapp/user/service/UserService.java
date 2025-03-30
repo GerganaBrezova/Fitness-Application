@@ -3,7 +3,6 @@ package app.fittapp.user.service;
 import app.fittapp.calculator.service.CalculatorService;
 import app.fittapp.exceptions.*;
 import app.fittapp.meal.model.Meal;
-import app.fittapp.post.model.Post;
 import app.fittapp.security.UserAuthDetails;
 import app.fittapp.user.model.User;
 import app.fittapp.user.model.UserRole;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
