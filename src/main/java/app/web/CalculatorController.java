@@ -39,18 +39,22 @@ public class CalculatorController {
     }
 
     @PostMapping
-    public String calculateDailyIntake(@AuthenticationPrincipal UserAuthDetails userAuthDetails,
-                                       @Valid CalculateRequest calculateRequest,
-                                       BindingResult bindingResult) {
+    public ModelAndView calculateDailyIntake(@AuthenticationPrincipal UserAuthDetails userAuthDetails,
+                                             @Valid CalculateRequest calculateRequest,
+                                             BindingResult bindingResult) {
+
+        User user = userService.getUserById(userAuthDetails.getId());
 
         if (bindingResult.hasErrors()) {
-            return "calculator";
+            ModelAndView modelAndView = new ModelAndView("calculator");
+            modelAndView.addObject("calculateRequest", calculateRequest);
+            modelAndView.addObject("user", user);
+            return modelAndView;
         }
 
         userService.editUserAdditionalDetails(userAuthDetails.getId(), calculateRequest);
+        userService.calculateUserDailyIntake(userAuthDetails.getId(), calculateRequest);
 
-        userService.calculateUserDailyIntake(userAuthDetails.getId() ,calculateRequest);
-
-        return "redirect:/calculator";
+        return new ModelAndView("redirect:/calculator");
     }
 }

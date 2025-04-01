@@ -183,8 +183,8 @@ public class UserServiceUTest {
                 .age(21)
                 .goal(UserGoal.LOSS_WEIGHT)
                 .activityLevel(UserActivityLevel.MODERATELY_ACTIVE)
-                .height(170)
-                .weight(60)
+                .height(170.0)
+                .weight(60.0)
                 .build();
 
         User user = User.builder()
@@ -243,8 +243,8 @@ public class UserServiceUTest {
                 .age(21)
                 .goal(UserGoal.LOSS_WEIGHT)
                 .activityLevel(UserActivityLevel.MODERATELY_ACTIVE)
-                .height(170)
-                .weight(60)
+                .height(170.0)
+                .weight(60.0)
                 .build();
 
         User user = User.builder()
