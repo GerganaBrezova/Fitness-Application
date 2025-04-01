@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label>Gender</label>
                         <select th:field="*{gender}">
-                            <option th:each="gender : ${T(app.fittapp.user.model.UserGender).values()}" th:value="${gender}" th:text="${#strings.capitalize(#strings.toLowerCase(gender))}"></option>
+                            <option th:each="gender : ${T(app.user.model.UserGender).values()}" th:value="${gender}" th:text="${#strings.capitalize(#strings.toLowerCase(gender))}"></option>
                         </select>
                     </div>
 
@@ -45,7 +45,7 @@
                         <label>Activity Level</label>
 
                         <select th:field="*{activityLevel}">
-                            <option th:each="level : ${T(app.fittapp.user.model.UserActivityLevel).values()}"
+                            <option th:each="level : ${T(app.user.model.UserActivityLevel).values()}"
                                     th:value="${level}"
                                     th:text="${#strings.capitalize(#strings.toLowerCase(#strings.replace(level, '_', ' ')))}">
                             </option>
@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <label>Goal</label>
                         <select th:field="*{goal}">
-                            <option th:each="goal : ${T(app.fittapp.user.model.UserGoal).values()}"
+                            <option th:each="goal : ${T(app.user.model.UserGoal).values()}"
                                     th:value="${goal}"
                                     th:text="${#strings.capitalize(#strings.toLowerCase(#strings.replace(goal, '_', ' ')))}">
                             </option>

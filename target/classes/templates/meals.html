@@ -25,7 +25,7 @@
                 <div class="form-group">
 
                     <select th:field="*{type}">
-                        <option th:each="type : ${T(app.fittapp.meal.model.MealType).values()}"
+                        <option th:each="type : ${T(app.meal.model.MealType).values()}"
                                 th:value="${type}"
                                 th:text="${#strings.capitalize(#strings.toLowerCase(type))}">
                         </option>
