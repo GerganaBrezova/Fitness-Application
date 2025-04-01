@@ -1,5 +1,7 @@
 package app.workout.service;
 
+import app.event.UserCompletedWorkoutEventProducer;
+import app.event.payload.UserCompletedWorkoutEvent;
 import app.exceptions.DomainException;
 import app.exceptions.WorkoutNotFound;
 import app.user.model.User;
@@ -24,12 +26,14 @@ public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final CompletedWorkoutRepository completedWorkoutRepository;
     private final UserService userService;
+    private final UserCompletedWorkoutEventProducer userCompletedWorkoutEventProducer;
 
     @Autowired
-    public WorkoutService(WorkoutRepository workoutRepository, CompletedWorkoutRepository completedWorkoutRepository, UserService userService) {
+    public WorkoutService(WorkoutRepository workoutRepository, CompletedWorkoutRepository completedWorkoutRepository, UserService userService, UserCompletedWorkoutEventProducer userCompletedWorkoutEventProducer) {
         this.workoutRepository = workoutRepository;
         this.completedWorkoutRepository = completedWorkoutRepository;
         this.userService = userService;
+        this.userCompletedWorkoutEventProducer = userCompletedWorkoutEventProducer;
     }
 
     public void initWorkout(int day, String type, String imagePath, List<String> exercises, WorkoutPlan plan) {
@@ -59,6 +63,13 @@ public class WorkoutService {
 
         user.setPoints(user.getPoints() + 5);
         userService.saveUser(user);
+
+        UserCompletedWorkoutEvent userCompletedWorkoutEvent = UserCompletedWorkoutEvent.builder()
+                .userId(user.getId())
+                .completedOn(LocalDateTime.now())
+                .build();
+
+        userCompletedWorkoutEventProducer.sendEvent(userCompletedWorkoutEvent);
 
         completedWorkoutRepository.save(completedWorkout);
     }

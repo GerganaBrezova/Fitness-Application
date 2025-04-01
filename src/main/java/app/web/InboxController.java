@@ -15,7 +15,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/inbox")
@@ -41,8 +44,12 @@ public class InboxController {
         String url = "http://localhost:8081/api/v1/inbox/" + userId;
         InboxMessageRequest[] messages = restTemplate.getForObject(url, InboxMessageRequest[].class);
 
-        assert messages != null;
-        modelAndView.addObject("messages", Arrays.asList(messages));
+        if (messages != null) {
+            List<InboxMessageRequest> messageList = Arrays.stream(messages)
+                    .sorted(Comparator.comparing(InboxMessageRequest::getSentOn).reversed())
+                    .collect(Collectors.toList());
+            modelAndView.addObject("messages", messageList);
+        }
         modelAndView.addObject("user", user);
 
         return modelAndView;
