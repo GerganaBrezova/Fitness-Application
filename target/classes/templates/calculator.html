@@ -24,21 +24,25 @@
                         <select th:field="*{gender}">
                             <option th:each="gender : ${T(app.user.model.UserGender).values()}" th:value="${gender}" th:text="${#strings.capitalize(#strings.toLowerCase(gender))}"></option>
                         </select>
+                        <small th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></small>
                     </div>
 
                     <div class="form-group">
                         <label>Height (cm)</label>
-                        <input type="text" placeholder="Enter your height" step="0.1" th:field="*{height}" required>
+                        <input type="text" placeholder="Enter your height" step="0.1" th:field="*{height}">
+                        <small th:if="${#fields.hasErrors('height')}" th:errors="*{height}"></small>
                     </div>
 
                     <div class="form-group">
                         <label>Age</label>
                         <input type="text" placeholder="Enter your age" th:field="*{age}">
+                        <small th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></small>
                     </div>
 
                     <div class="form-group">
                         <label>Weight (kg)</label>
-                        <input type="text" placeholder="Enter your weight" step="0.1" th:field="*{weight}" required>
+                        <input type="text" placeholder="Enter your weight" step="0.1" th:field="*{weight}">
+                        <small th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></small>
                     </div>
 
                     <div class="form-group">
@@ -50,6 +54,7 @@
                                     th:text="${#strings.capitalize(#strings.toLowerCase(#strings.replace(level, '_', ' ')))}">
                             </option>
                         </select>
+                        <small th:if="${#fields.hasErrors('activityLevel')}" th:errors="*{activityLevel}"></small>
                     </div>
 
                     <div class="form-group">
@@ -60,6 +65,7 @@
                                     th:text="${#strings.capitalize(#strings.toLowerCase(#strings.replace(goal, '_', ' ')))}">
                             </option>
                         </select>
+                        <small th:if="${#fields.hasErrors('goal')}" th:errors="*{goal}"></small>
                     </div>
                 </div>
 

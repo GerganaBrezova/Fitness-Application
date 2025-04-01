@@ -19,19 +19,19 @@ public class CalculateRequest {
     @NotNull
     private UserGender gender;
 
-    @Positive
-    @NotNull
+    @Positive(message = "Age must be positive!")
+    @NotNull(message = "Age is required!")
     private int age;
 
     @NotNull
     private UserActivityLevel activityLevel;
 
-    @Positive
-    @NotNull
+    @Positive(message = "Height must be positive!")
+    @NotNull(message = "Height is required!")
     private double height;
 
-    @Positive
-    @NotNull
+    @Positive(message = "Weight must be positive!")
+    @NotNull(message = "Weight is required!")
     private double weight;
 
     @NotNull

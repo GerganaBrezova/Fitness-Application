@@ -1,5 +1,6 @@
-package app.event.payload;
+package app.web.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,13 +11,15 @@ import java.util.UUID;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserRegisteredEvent {
+@AllArgsConstructor
+public class InboxMessageRequest {
 
     private UUID userId;
 
-    private String username;
+    private String header;
 
-    private LocalDateTime createdOn;
+    private String content;
+
+    private LocalDateTime sentOn;
 }

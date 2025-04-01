@@ -20,6 +20,7 @@ public class UserRegisteredEventProducer {
     public void sendEvent(UserRegisteredEvent userRegisteredEvent) {
 
         kafkaTemplate.send("user-registered-event.v1", userRegisteredEvent);
+
         log.info("Successfully sent user-registered-event for user %s.".formatted(userRegisteredEvent.getUserId()));
     }
 }
