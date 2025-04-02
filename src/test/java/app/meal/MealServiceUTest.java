@@ -130,4 +130,14 @@ public class MealServiceUTest {
         verify(mealRepository, times(1)).deleteById(mealToRemove.getId());
         verify(userService, times(1)).saveUser(user);
     }
+
+    //Delete All Meals
+    @Test
+    void whenDeleteMeals_thenAllMealsDeleted() {
+
+        mealService.deleteAllMeals();
+
+        verify(mealRepository, times(1)).deleteAll();
+    }
+
 }
