@@ -1,5 +1,6 @@
 package app.web;
 
+import app.schedular.MotivationalQuoteScheduler;
 import app.security.UserAuthDetails;
 import app.user.model.User;
 import app.user.service.UserService;
@@ -19,10 +20,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class IndexController {
 
     private final UserService userService;
+    private final MotivationalQuoteScheduler motivationalQuoteScheduler;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, MotivationalQuoteScheduler motivationalQuoteScheduler) {
         this.userService = userService;
+        this.motivationalQuoteScheduler = motivationalQuoteScheduler;
     }
 
     @GetMapping("/")
@@ -74,6 +77,7 @@ public class IndexController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("quote", motivationalQuoteScheduler.getDailyQuote());
 
         return modelAndView;
     }

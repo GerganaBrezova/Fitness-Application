@@ -55,4 +55,8 @@ public class MealService {
     public Meal getMealById(UUID mealId) {
         return mealRepository.findById(mealId).orElseThrow(() -> new MealNotFound("Meal with id %s was not found.".formatted(mealId)));
     }
+
+    public void deleteAllMeals() {
+        mealRepository.deleteAll();
+    }
 }
