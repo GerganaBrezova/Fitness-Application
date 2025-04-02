@@ -1,6 +1,5 @@
 package app.web;
 
-import app.meal.model.Meal;
 import app.meal.service.MealService;
 import app.security.UserAuthDetails;
 import app.user.model.User;

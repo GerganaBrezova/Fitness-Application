@@ -1,22 +1,17 @@
 package app.post.service;
 
-import app.exceptions.DomainException;
 import app.exceptions.PostNotFound;
 import app.post.model.Post;
 import app.post.repository.PostRepository;
-import app.security.UserAuthDetails;
 import app.user.model.User;
 import app.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 

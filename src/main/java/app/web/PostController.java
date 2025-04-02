@@ -5,7 +5,6 @@ import app.post.service.PostService;
 import app.security.UserAuthDetails;
 import app.user.model.User;
 import app.user.service.UserService;
-import app.workout.model.CompletedWorkout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

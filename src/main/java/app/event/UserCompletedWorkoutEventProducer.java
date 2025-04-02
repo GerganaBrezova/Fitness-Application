@@ -1,7 +1,6 @@
 package app.event;
 
 import app.event.payload.UserCompletedWorkoutEvent;
-import app.event.payload.UserRegisteredEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;

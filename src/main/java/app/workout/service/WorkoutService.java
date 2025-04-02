@@ -2,10 +2,8 @@ package app.workout.service;
 
 import app.event.UserCompletedWorkoutEventProducer;
 import app.event.payload.UserCompletedWorkoutEvent;
-import app.exceptions.DomainException;
 import app.exceptions.WorkoutNotFound;
 import app.user.model.User;
-import app.user.repository.UserRepository;
 import app.user.service.UserService;
 import app.workout.model.CompletedWorkout;
 import app.workout.model.Workout;
@@ -15,10 +13,8 @@ import app.workout_plan.model.WorkoutPlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class WorkoutService {

@@ -72,13 +72,6 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(user);
 
-//        UserRegisteredEvent event = UserRegisteredEvent.builder()
-//                .userId(user.getId())
-//                .build();
-//
-//
-//        applicationEventPublisher.publishEvent(event);
-
         UserRegisteredEvent userRegisteredEvent = UserRegisteredEvent.builder()
                 .userId(user.getId())
                 .createdOn(LocalDateTime.now())
