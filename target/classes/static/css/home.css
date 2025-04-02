@@ -18,7 +18,8 @@
 }
 
 .welcome-card h2 {
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
+    margin-top: 10px;
     font-size: 24px; 
 }
 

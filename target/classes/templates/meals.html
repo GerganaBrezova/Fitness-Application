@@ -73,7 +73,7 @@
                           th:text="${#numbers.formatInteger(user.dailyIntake - caloriesFromMeals, 0)}">
                     </span>
 
-                    <span th:if="${user.dailyIntake - caloriesFromMeals < 0}"
+                    <span th:if="${user.dailyIntake - caloriesFromMeals < 0 and user.dailyIntake != 0}"
                           th:text="'You have exceeded by ' + ${#numbers.formatInteger(caloriesFromMeals - user.dailyIntake, 0)} + ' calories!'">
                     </span>
             </p>

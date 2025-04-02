@@ -16,7 +16,7 @@
         <div class="welcome-profile-card">
             <div class="welcome-card">
                 <h2 th:text="${#strings.isEmpty(user.name) ? 'Hello, ' + user.username + '!' : 'Hello, ' + user.name + '!'}"></h2>
-                <p>Eat well, stay hydrated, and keep moving to stay strong and healthy :)</p>
+                <p th:text="${quote}"></p>
             </div>
 
             <div class="profile-card">

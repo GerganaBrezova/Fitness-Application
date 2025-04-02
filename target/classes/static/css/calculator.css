@@ -19,7 +19,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    height: 550px; 
+    height: auto;
     overflow-y: auto;
 }
 
@@ -33,7 +33,7 @@ form {
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr; 
-    gap: 20px; 
+    gap: 20px;
     width: 100%;
     margin-top: 30px;
 }
@@ -80,7 +80,7 @@ label {
     cursor: pointer;
     width: 20%;
     align-self: center;
-    margin-top: 30px; 
+    margin-top: 50px;
 }
 
 .calculator-header {
@@ -115,7 +115,7 @@ button:hover {
     font-weight: 400;
     text-align: center;
     width: 100%;
-    margin-top: 50px; 
+    margin-top: 30px;
 }
 
 .result b {

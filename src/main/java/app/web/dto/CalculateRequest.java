@@ -3,7 +3,6 @@ package app.web.dto;
 import app.user.model.UserActivityLevel;
 import app.user.model.UserGender;
 import app.user.model.UserGoal;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
