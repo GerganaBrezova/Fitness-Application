@@ -1,5 +1,6 @@
 package app;
 
+import app.meal.model.Meal;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.workout.model.CompletedWorkout;
@@ -16,6 +17,12 @@ public class TestBuilder {
 
     public static User testUser() {
 
+        Meal meal = Meal.builder()
+                .id(UUID.randomUUID())
+                .calories(300)
+                .description("Meat")
+                .build();
+
         User user = User.builder()
                 .id(UUID.randomUUID())
                 .username("Gery11")
@@ -24,6 +31,7 @@ public class TestBuilder {
                 .role(UserRole.USER)
                 .isActive(true)
                 .completedWorkouts(new ArrayList<>(List.of(new CompletedWorkout(), new CompletedWorkout())))
+                .meals(new ArrayList<>(List.of(meal)))
                 .createdOn(LocalDateTime.now())
                 .build();
 
