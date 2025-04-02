@@ -1,6 +1,8 @@
 package app.user;
 
 import app.calculator.service.CalculatorService;
+import app.event.UserRegisteredEventProducer;
+import app.event.payload.UserRegisteredEvent;
 import app.exceptions.EmailAlreadyExists;
 import app.exceptions.PasswordsDoNotMatch;
 import app.exceptions.UserNotFound;
@@ -13,12 +15,14 @@ import app.user.service.UserService;
 import app.web.dto.CalculateRequest;
 import app.web.dto.EditRequest;
 import app.web.dto.RegisterRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -27,6 +31,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +47,7 @@ public class UserServiceUTest {
     private CalculatorService calculatorService;
 
     @Mock
-    private ApplicationEventPublisher applicationEventPublisher;
+    private UserRegisteredEventProducer userRegisteredEventProducer;
 
     @InjectMocks
     private UserService userService;
@@ -107,18 +112,33 @@ public class UserServiceUTest {
                 .email("gery@gmail.com")
                 .build();
 
-        User user = User.builder()
-                .id(UUID.randomUUID())
-                .build();
+        UUID expectedUserId = UUID.randomUUID();
 
         when(userRepository.findByUsername(registerRequest.getUsername())).thenReturn(Optional.empty());
         when(userRepository.findByEmail(registerRequest.getEmail())).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(passwordEncoder.encode(registerRequest.getPassword())).thenReturn("111213");
 
-        userService.register(registerRequest);
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        when(userRepository.save(userCaptor.capture())).thenAnswer(invocation -> {
+            User savedUser = userCaptor.getValue();
+            savedUser.setId(expectedUserId);
+            return savedUser;
+        });
 
-        assertEquals(registerRequest.getPassword(), registerRequest.getConfirmPassword());
+        User registeredUser = userService.register(registerRequest);
+
+        assertNotNull(registeredUser);
+        assertEquals(expectedUserId, registeredUser.getId());
+        verify(userRepository, times(1)).save(any(User.class));
+
+        ArgumentCaptor<UserRegisteredEvent> eventCaptor = ArgumentCaptor.forClass(UserRegisteredEvent.class);
+        verify(userRegisteredEventProducer, times(1)).sendEvent(eventCaptor.capture());
+
+        UserRegisteredEvent capturedEvent = eventCaptor.getValue();
+        assertNotNull(capturedEvent);
+        assertEquals(expectedUserId, capturedEvent.getUserId());
     }
+
 
     //Get User By ID
     @Test

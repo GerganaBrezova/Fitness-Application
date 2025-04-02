@@ -1,5 +1,7 @@
 package app.workout;
 
+import app.event.UserCompletedWorkoutEventProducer;
+import app.event.payload.UserCompletedWorkoutEvent;
 import app.exceptions.WorkoutNotFound;
 import app.user.model.User;
 import app.user.service.UserService;
@@ -35,6 +37,9 @@ public class WorkoutServiceUTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private UserCompletedWorkoutEventProducer userCompletedWorkoutEventProducer;
 
     @InjectMocks
     private WorkoutService workoutService;
@@ -94,7 +99,7 @@ public class WorkoutServiceUTest {
         workoutService.initCompletedWorkout(user, workout);
 
         ArgumentCaptor<CompletedWorkout> captor = ArgumentCaptor.forClass(CompletedWorkout.class);
-        verify(completedWorkoutRepository).save(captor.capture());
+        verify(completedWorkoutRepository, times(1)).save(captor.capture());
 
         CompletedWorkout savedWorkout = captor.getValue();
 
@@ -102,8 +107,17 @@ public class WorkoutServiceUTest {
         assertEquals(day, savedWorkout.getDay());
         assertEquals(user, savedWorkout.getUser());
         assertEquals(105, user.getPoints());
+
         verify(completedWorkoutRepository, times(1)).save(any(CompletedWorkout.class));
         verify(userService, times(1)).saveUser(user);
+
+        ArgumentCaptor<UserCompletedWorkoutEvent> eventCaptor = ArgumentCaptor.forClass(UserCompletedWorkoutEvent.class);
+        verify(userCompletedWorkoutEventProducer, times(1)).sendEvent(eventCaptor.capture());
+
+        UserCompletedWorkoutEvent capturedEvent = eventCaptor.getValue();
+
+        assertNotNull(capturedEvent);
+        assertEquals(user.getId(), capturedEvent.getUserId());
     }
 
     //Get All System Workouts
