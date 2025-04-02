@@ -2,6 +2,7 @@ package app.web;
 
 import app.exceptions.EmailAlreadyExists;
 import app.exceptions.UsernameAlreadyExists;
+import app.schedular.MotivationalQuoteScheduler;
 import app.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.UUID;
+
+import static app.TestBuilder.testUser;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -23,6 +27,9 @@ public class IndexControllerApiTest {
 
     @MockitoBean
     private UserService userService;
+
+    @MockitoBean
+    private MotivationalQuoteScheduler motivationalQuoteScheduler;
 
     @Autowired
     private MockMvc mockMvc;
@@ -143,21 +150,33 @@ public class IndexControllerApiTest {
                 .andExpect(model().attributeExists("loginRequest", "errorMessage"));
     }
 
+    @Test
+    void getUnauthenticatedRequestToHome_thenRedirectToLogin() throws Exception {
+
+        MockHttpServletRequestBuilder request = get("/home");
+
+        mockMvc.perform(request)
+                .andExpect(status().is3xxRedirection());
+        verify(userService, never()).getUserById(any());
+    }
+
 //    @Test
 //    void getAuthenticatedRequestToHome_thenReturnHomeView() throws Exception {
 //
 //        when(userService.getUserById(any())).thenReturn(testUser());
 //
 //        UUID userId = UUID.randomUUID();
-//        UserAuthDetails userAuthDetails = new UserAuthDetails(userId, "Gery11", "123456", "gery@gmail.com", UserRole.USER, true);
+//        UserAuthDetails principal = new UserAuthDetails(userId, "Gery11", "123456", "gery@gmail.com", UserRole.USER, true);
+//
 //        MockHttpServletRequestBuilder request = get("/home")
-//                .with(user(userAuthDetails));
+//                .with(user(principal));
 //
 //        mockMvc.perform(request)
 //                .andExpect(status().isOk())
 //                .andExpect(view().name("home"))
 //                .andExpect(model().attributeExists("user"));
-//        verify(userService, times(1)).getUserById(any());
+//        verify(userService, times(1)).getUserById(userId);
 //    }
+
 
 }

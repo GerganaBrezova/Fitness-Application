@@ -115,7 +115,6 @@ public class WorkoutServiceUTest {
         verify(userCompletedWorkoutEventProducer, times(1)).sendEvent(eventCaptor.capture());
 
         UserCompletedWorkoutEvent capturedEvent = eventCaptor.getValue();
-
         assertNotNull(capturedEvent);
         assertEquals(user.getId(), capturedEvent.getUserId());
     }
