@@ -61,6 +61,7 @@ public class MealControllerApiTest {
         mockMvc.perform(request)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("http://localhost/login"));
+        verify(userService, never()).getUserById(any());
     }
 
     @Test

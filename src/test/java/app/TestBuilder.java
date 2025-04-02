@@ -1,6 +1,7 @@
 package app;
 
 import app.meal.model.Meal;
+import app.post.model.Post;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.workout.model.CompletedWorkout;
@@ -8,9 +9,7 @@ import app.workout_plan.model.WorkoutPlan;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @UtilityClass
 public class TestBuilder {
@@ -23,6 +22,14 @@ public class TestBuilder {
                 .description("Meat")
                 .build();
 
+        Post firstPost = Post.builder()
+                .id(UUID.randomUUID())
+                .build();
+
+        Post secondPost = Post.builder()
+                .id(UUID.randomUUID())
+                .build();
+
         User user = User.builder()
                 .id(UUID.randomUUID())
                 .username("Gery11")
@@ -32,6 +39,7 @@ public class TestBuilder {
                 .isActive(true)
                 .completedWorkouts(new ArrayList<>(List.of(new CompletedWorkout(), new CompletedWorkout())))
                 .meals(new ArrayList<>(List.of(meal)))
+                .likedPosts(new HashSet<>(Set.of(firstPost, secondPost)))
                 .createdOn(LocalDateTime.now())
                 .build();
 
