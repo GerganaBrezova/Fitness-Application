@@ -79,20 +79,6 @@ public class WorkoutPlanService {
         return workoutPlanRepository.findById(workoutPlanId).orElseThrow(() -> new WorkoutPlanNotFound("Workout plan with id %s was not found.".formatted(workoutPlanId)));
     }
 
-//    @Async
-//    @EventListener
-//    public void assignWorkoutPlanOnRegistration(UserRegisteredEvent event) {
-//
-//        User user = userService.getUserById(event.getUserId());
-//        WorkoutPlan workoutPlan = getWorkoutPlanByType("Beginner Plan");
-//
-//        user.getWorkoutPlans().add(workoutPlan);
-//
-//        userService.saveUser(user);
-//
-//        log.info("Assigned 'Beginner Plan' to user with id %s.".formatted(user.getId()));
-//    }
-
     public WorkoutPlan getWorkoutPlanByType(String type) {
         return workoutPlanRepository.findByType(type).orElseThrow(() -> new WorkoutPlanNotFound("Workout plan %s was not found.".formatted(type)));
     }
