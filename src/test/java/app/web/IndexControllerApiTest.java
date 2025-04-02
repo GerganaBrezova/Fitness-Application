@@ -3,6 +3,8 @@ package app.web;
 import app.exceptions.EmailAlreadyExists;
 import app.exceptions.UsernameAlreadyExists;
 import app.schedular.MotivationalQuoteScheduler;
+import app.security.UserAuthDetails;
+import app.user.model.UserRole;
 import app.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import static app.TestBuilder.testUser;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -160,23 +163,21 @@ public class IndexControllerApiTest {
         verify(userService, never()).getUserById(any());
     }
 
-//    @Test
-//    void getAuthenticatedRequestToHome_thenReturnHomeView() throws Exception {
-//
-//        when(userService.getUserById(any())).thenReturn(testUser());
-//
-//        UUID userId = UUID.randomUUID();
-//        UserAuthDetails principal = new UserAuthDetails(userId, "Gery11", "123456", "gery@gmail.com", UserRole.USER, true);
-//
-//        MockHttpServletRequestBuilder request = get("/home")
-//                .with(user(principal));
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("home"))
-//                .andExpect(model().attributeExists("user"));
-//        verify(userService, times(1)).getUserById(userId);
-//    }
+    @Test
+    void getAuthenticatedRequestToHome_thenReturnHomeView() throws Exception {
 
+        when(userService.getUserById(any())).thenReturn(testUser());
+        when(motivationalQuoteScheduler.getDailyQuote()).thenReturn("Stay strong and keep pushing forward!");
 
+        UUID userId = UUID.randomUUID();
+        UserAuthDetails principal = new UserAuthDetails(userId, "Gery11", "123456", "gery@gmail.com", UserRole.USER, true);
+
+        MockHttpServletRequestBuilder request = get("/home").with(user(principal));
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(view().name("home"))
+                .andExpect(model().attributeExists("user", "quote"));
+        verify(userService, times(1)).getUserById(userId);
+    }
 }
