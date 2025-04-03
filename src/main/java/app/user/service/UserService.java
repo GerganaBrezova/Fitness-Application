@@ -30,7 +30,6 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CalculatorService calculatorService;
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final UserRegisteredEventProducer userRegisteredEventProducer;
 
     @Autowired
@@ -38,7 +37,6 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.calculatorService = calculatorService;
-        this.applicationEventPublisher = applicationEventPublisher;
         this.userRegisteredEventProducer = userRegisteredEventProducer;
     }
 
