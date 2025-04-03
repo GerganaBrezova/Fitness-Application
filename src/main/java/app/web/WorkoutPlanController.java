@@ -56,8 +56,8 @@ public class WorkoutPlanController {
         workoutPlanService.sortWorkoutsByDay(workoutPlan);
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("plan-details");
 
+        modelAndView.setViewName("plan-details");
         modelAndView.addObject("user", user);
         modelAndView.addObject("workoutPlan", workoutPlan);
 

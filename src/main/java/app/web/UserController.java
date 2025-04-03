@@ -33,14 +33,13 @@ public class UserController {
     public ModelAndView getUsersPage(@AuthenticationPrincipal UserAuthDetails userAuthDetails) {
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("users");
 
         List<User> users = userService.getAllUsers();
-        modelAndView.addObject("users", users);
-
         User loggedUser = userService.getUserById(userAuthDetails.getId());
-        modelAndView.addObject("loggedUser", loggedUser);
 
+        modelAndView.setViewName("users");
+        modelAndView.addObject("users", users);
+        modelAndView.addObject("loggedUser", loggedUser);
         modelAndView.addObject("searchPerformed", false);
 
         return modelAndView;
