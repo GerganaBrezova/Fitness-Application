@@ -1,7 +1,5 @@
 package app.web;
 
-import app.meal.model.MealType;
-import app.meal.service.MealService;
 import app.post.model.Post;
 import app.post.service.PostService;
 import app.security.UserAuthDetails;
