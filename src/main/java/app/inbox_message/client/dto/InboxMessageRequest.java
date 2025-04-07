@@ -1,4 +1,4 @@
-package app.web.dto;
+package app.inbox_message.client.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

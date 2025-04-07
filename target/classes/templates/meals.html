@@ -9,8 +9,6 @@
 </head>
 <body>
 
-<!--TODO: fix form html-->
-
 <th:block th:insert="fragments/sidebar :: sidebar"></th:block>
 
 <div class="content">
@@ -69,7 +67,7 @@
             <span th:if="${user.dailyIntake == 0}">
                 <a th:href="@{/calculator}" class="daily-intake-link">Calculate your calories</a>
             </span>
-            <span th:if="${user.dailyIntake - caloriesFromMeals >= 0}"
+            <span th:if="${user.dailyIntake - caloriesFromMeals > 0}"
                   th:text="${#numbers.formatInteger(user.dailyIntake - caloriesFromMeals, 0)}">
             </span>
             <span th:if="${user.dailyIntake - caloriesFromMeals < 0 and user.dailyIntake != 0}"

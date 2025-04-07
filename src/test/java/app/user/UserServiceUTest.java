@@ -53,7 +53,6 @@ public class UserServiceUTest {
     private UserService userService;
 
     //Register
-    //TODO: test the event
     @Test
     void throwsException_whenRegister_withExistingUsername() {
 

@@ -80,7 +80,6 @@ public class MealServiceUTest {
         mealService.addNewMeal(mealRequest, user);
 
         assertEquals(2, user.getMeals().size());
-        //assertTrue(user.getMeals().contains(newMeal));
         verify(mealRepository, times(1)).save(any());
     }
 
